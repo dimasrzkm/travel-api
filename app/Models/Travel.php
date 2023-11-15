@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Travel extends Model
 {
-    use HasFactory, Sluggable, HasUuids;
+    use HasFactory, HasUuids, Sluggable;
 
     protected $table = 'travels';
 
@@ -20,32 +20,30 @@ class Travel extends Model
         'slug',
         'name',
         'description',
-        'number_of_days'
+        'number_of_days',
     ];
 
     public function tours(): HasMany
     {
-        return $this->hasMany(Tour::class);   
+        return $this->hasMany(Tour::class);
     }
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 
     public function numberOfNights(): Attribute
     {
         return Attribute::make(
-            get: fn($value, $attributes) => $attributes['number_of_days'] - 1
+            get: fn ($value, $attributes) => $attributes['number_of_days'] - 1
         );
     }
 }
